@@ -20,7 +20,6 @@ namespace task {
                 m_data.clear();
                 char ch = 0;
                 while ((ch = t_str.at(++ptr)) != '\"') {
-                    if (ch == ' ') continue;
                     temp.push_back(t_str.at(ptr));
                 } ptr++;
                 m_data = std::move(temp);

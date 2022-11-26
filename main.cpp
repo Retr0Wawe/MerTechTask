@@ -17,17 +17,31 @@ int main()
 
     test.second.m_data[CATEGORY] = "test_category";
 
+    std::pair<std::string, block_of_task> test1 = {};
+    
+    // -------------------------
+    
+    test.first = "test_task2";
+
+    test1.second.m_data[DESC] = "test_task2";
+
+    test1.second.m_data[DATE] = "2022-12-12-00:20";
+
+    test1.second.m_data[CATEGORY] = "test_category_1";
+
     handler.getStorage().insert(test);
+    handler.getStorage().insert(test1);
 
     try {
         std::string string;
 
         do {
-            //std::getline(std::cin, string);
-        } while (handler.parseCommand("select * where date < \"2020-12-12-00:00\" and category=\"lol\"")
+            std::getline(std::cin, string);
+        } while (handler.parseCommand(string)
             != eCode::STOP);
     } catch (const std::runtime_error& err) {
         std::cout << err.what() << std::endl;
     }
     // select * where date < \"2020-12-12-00:00\"
+    // "select * where date < \"2020-12-12 00:00\" and category=\"lol\""
 }

@@ -104,9 +104,9 @@ namespace task {
                         }
 
                         if (m_lex.getToken(m_str_format) == eToken::T_AND) {
-                            m_lex.getToken(m_str_format); temp = m_lex.getData();
+                            it = m_lex.getToken(m_str_format); temp = m_lex.getData();
                             for (auto& task : m_tasks) {
-                                if (!handleString(task.second, temp)) {
+                                if (!handleTokens(task.second, it)) {
                                    break;
                                 }
                             }
@@ -168,27 +168,8 @@ namespace task {
         }
     }
 
-    auto TaskHandler::handleString(block_of_task& t_task, const std::string& t_data) -> bool
+    auto TaskHandler::handleTokens(block_of_task& t_task, const eToken t_tok) -> bool
     {
-        auto it = m_lex.getToken(m_str_format);
-
-        if (it != eToken::T_EQUAL) {
-            std::cout << "Parse string error: expected [=]" << std::endl;
-            return false;
-        }
-
-        m_lex.getToken(m_str_format); auto temp = m_lex.getData();
-
-        std::cout << temp << std::endl;
-
-        if (t_data == "category") {
-            std::cout << "category" << std::endl;
-        } else if (t_data == "description") {
-
-        } else if (t_data == "status") {
-
-        }
-
         return true;
     }
 

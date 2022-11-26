@@ -65,9 +65,11 @@ namespace task {
         // Потом поменять на const!
         auto getStorage() noexcept -> storage&;
 
+        
+
         auto handleDate(block_of_task& t_task, const std::string& t_data, const eToken t_tok) noexcept -> void;
 
-        auto handleString(block_of_task& t_task, const std::string& t_data) -> bool;
+        auto handleTokens(block_of_task& t_task, const eToken t_tok) -> bool;
     public:
         TaskHandler& operator=(const TaskHandler&) = default;
 

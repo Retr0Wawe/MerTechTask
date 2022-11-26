@@ -7,9 +7,9 @@
 // Small lexer for select
 namespace task {
     enum class eToken : int {
-        T_QUOT, T_WHERE, T_AND, T_LIKE, T_DATE, T_ERROR, T_WORD,
+        T_QUOT, T_WHERE, T_AND, T_LIKE, T_ERROR, T_WORD,
         T_MORE, T_LESS, T_LESS_OR_EQ, T_MORE_OR_EQ, T_EQUAL,
-        T_CATEGORY, T_DESC, T_STATUS
+        T_CATEGORY, T_DESC, T_STATUS, T_DATE
     };
 
     inline std::unordered_map<std::string, eToken> g_tokens = {
@@ -18,13 +18,16 @@ namespace task {
         {"and", eToken::T_AND},
         {"like", eToken::T_LIKE},
         {"date", eToken::T_DATE},
+        {"category", eToken::T_CATEGORY},
+        {"description", eToken::T_DESC},
+        {"status", eToken::T_STATUS},
         {">", eToken::T_MORE},
         {"<", eToken::T_LESS},
         {"<=", eToken::T_LESS_OR_EQ},
         {">=", eToken::T_MORE_OR_EQ},
         {"=", eToken::T_EQUAL}
     };
-
+        
     struct Lexer {
         auto getToken(const std::string& t_str) -> const eToken;
 
