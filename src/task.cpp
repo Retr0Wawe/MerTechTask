@@ -5,10 +5,14 @@
 #include <deque>
 
 namespace task {
-    bool operator<(const block_of_task& t_task, const std::string& t_data)
+    bool operator<(const block_of_task& t_task, const std::string& t_data) noexcept
     {
-        //return t_task.data[DATE] < t_data;
-        return true;
+        return t_task.m_data[DATE] < t_data;
+    }
+
+    bool operator>(const block_of_task& t_task, const std::string& t_data) noexcept
+    {
+        return t_task.m_data[DATE] > t_data;
     }
 
     auto TaskHandler::addTask(const std::string& t_data) -> void
@@ -29,13 +33,13 @@ namespace task {
         std::size_t prev = 0, next = 0, delta = 1;
 
         std::size_t i = 0;
-        while (i < block.second.data.size() && 
+        while (i < block.second.m_data.size() && 
         (next = str.find(' ', prev)) != std::string::npos) {
-            block.second.data.at(i++) = str.substr(prev, next - prev);
+            block.second.m_data.at(i++) = str.substr(prev, next - prev);
             prev = next + delta;
         }
 
-        block.second.data.at(i) = str.substr(prev);
+        block.second.m_data.at(i) = str.substr(prev);
         m_tasks.insert(block);
     }
 
@@ -48,7 +52,7 @@ namespace task {
             return;
         }
 
-        it->second.is_done = true;
+        it->second.m_is_done = true;
     }
 
     auto TaskHandler::updateTask(const std::string& t_data) noexcept -> void
@@ -60,7 +64,7 @@ namespace task {
             return;
         }
 
-        for (auto& str : it->second.data) {
+        for (auto& str : it->second.m_data) {
             std::getline(std::cin, str);
         }
     }
@@ -84,25 +88,27 @@ namespace task {
             return;
         }
 
-        auto str = t_data.substr(t_data.find(' ') + 1);
+        m_str_format = t_data.substr(t_data.find(' ') + 1);
 
-        std::cout << "TEST STR " << str << "d" << std::endl;
-
-        Lexer lex;
-        for (Token it; (it = lex.getToken(str)) != Token::T_ERROR; ) {
-            if (it == Token::T_WHERE) {
-                if (lex.getToken(str) == Token::T_DATE) {
-                    it = lex.getToken(str);
-                    if (it == Token::T_MORE || it == Token::T_LESS
-                       || it == Token::T_LESS_OR_EQ || it == Token::T_MORE_OR_EQ
-                       || it == Token::T_EQUAL) {
-                        lex.getToken(str);
-                        std::string temp = lex.getData();
+        for (eToken it; (it = m_lex.getToken(m_str_format)) != eToken::T_ERROR; ) {
+            if (it == eToken::T_WHERE) {
+                if (m_lex.getToken(m_str_format) == eToken::T_DATE) {
+                    it = m_lex.getToken(m_str_format);
+                    if (it == eToken::T_MORE || it == eToken::T_LESS
+                       || it == eToken::T_LESS_OR_EQ || it == eToken::T_MORE_OR_EQ
+                       || it == eToken::T_EQUAL) {
+                        m_lex.getToken(m_str_format); auto temp = m_lex.getData();
+                        
                         for (auto& task : m_tasks) {
-                            bool res = handleDate(task.second, temp, it);
+                            handleDate(task.second, temp, it);
+                        }
 
-                            if (res) {
-                                std::cout << "Done!" << std::endl;
+                        if (m_lex.getToken(m_str_format) == eToken::T_AND) {
+                            m_lex.getToken(m_str_format); temp = m_lex.getData();
+                            for (auto& task : m_tasks) {
+                                if (!handleString(task.second, temp)) {
+                                   break;
+                                }
                             }
                         }
                     }
@@ -111,12 +117,13 @@ namespace task {
                 std::cout << "Command select: unrecognized string" << std::endl;
             }
         }
+        m_lex.ptr = 0;
     }
 
-    auto TaskHandler::parseCommand(const std::string& t_expr) -> const Code
+    auto TaskHandler::parseCommand(const std::string& t_expr) -> const eCode
     {
         if (t_expr.empty()) {
-            return Code::EMPTY;
+            return eCode::EMPTY;
         }
 
         std::size_t pos = t_expr.find_first_of(' ');
@@ -135,12 +142,12 @@ namespace task {
         } else if (t_expr == "print") {
             printTasks();
         } else if (t_expr == "stop") {
-            return Code::STOP;
+            return eCode::STOP;
         } else {
-            return Code::NOT_FOUND;
+            return eCode::NOT_FOUND;
         }
 
-        return Code::SUCCES;
+        return eCode::SUCCES;
     }
 
     auto TaskHandler::getStorage() noexcept -> storage&
@@ -148,29 +155,52 @@ namespace task {
         return m_tasks;
     }
 
-    auto TaskHandler::handleDate(const block_of_task& t_task, const std::string& t_data, const Token t_tok) -> bool
+    auto TaskHandler::handleDate(block_of_task& t_task, const std::string& t_data, const eToken t_tok) noexcept -> void
     {
         switch (t_tok) {
-        case Token::T_MORE:
-
+        case eToken::T_MORE:
+            t_task.m_criteria[DATE] = t_task > t_data;
             break;
 
-        case Token::T_LESS:
-            return t_task < t_data;
+        case eToken::T_LESS:
+            t_task.m_criteria[DATE] = t_task < t_data;
             break;
         }
+    }
 
-        return false;
+    auto TaskHandler::handleString(block_of_task& t_task, const std::string& t_data) -> bool
+    {
+        auto it = m_lex.getToken(m_str_format);
+
+        if (it != eToken::T_EQUAL) {
+            std::cout << "Parse string error: expected [=]" << std::endl;
+            return false;
+        }
+
+        m_lex.getToken(m_str_format); auto temp = m_lex.getData();
+
+        std::cout << temp << std::endl;
+
+        if (t_data == "category") {
+            std::cout << "category" << std::endl;
+        } else if (t_data == "description") {
+
+        } else if (t_data == "status") {
+
+        }
+
+        return true;
     }
 
     auto TaskHandler::printTasks() const noexcept -> void
     {
+        std::cout << std::endl;
         for (const auto& task : m_tasks) {
             std::cout << "Task: " << task.first << std::endl;
-            if (!task.second.is_done) {
-                std::cout << "Description: " << task.second.data[DataType::DESC] << std::endl;
-                std::cout << "Date: " << task.second.data[DataType::DATE] << std::endl;
-                std::cout << "Category: " << task.second.data[DataType::CATEGORY] << std::endl;
+            if (!task.second.m_is_done) {
+                std::cout << "Description: " << task.second.m_data[eDataType::DESC] << std::endl;
+                std::cout << "Date: " << task.second.m_data[eDataType::DATE] << std::endl;
+                std::cout << "Category: " << task.second.m_data[eDataType::CATEGORY] << std::endl;
             } else {
                 std::cout << "Task done" << std::endl << std::endl;
             }

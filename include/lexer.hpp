@@ -6,28 +6,31 @@
 
 // Small lexer for select
 namespace task {
-    enum class Token : int {
+    enum class eToken : int {
         T_QUOT, T_WHERE, T_AND, T_LIKE, T_DATE, T_ERROR, T_WORD,
-        T_MORE, T_LESS, T_LESS_OR_EQ, T_MORE_OR_EQ, T_EQUAL
+        T_MORE, T_LESS, T_LESS_OR_EQ, T_MORE_OR_EQ, T_EQUAL,
+        T_CATEGORY, T_DESC, T_STATUS
     };
 
-    inline std::unordered_map<std::string, Token> g_tokens = {
-        {"\"", Token::T_QUOT},
-        {"where", Token::T_WHERE},
-        {"and", Token::T_AND},
-        {"like", Token::T_LIKE},
-        {"date", Token::T_DATE},
-        {">", Token::T_MORE},
-        {"<", Token::T_LESS},
-        {"<=", Token::T_LESS_OR_EQ},
-        {">=", Token::T_MORE_OR_EQ},
-        {"=", Token::T_EQUAL}
+    inline std::unordered_map<std::string, eToken> g_tokens = {
+        {"\"", eToken::T_QUOT},
+        {"where", eToken::T_WHERE},
+        {"and", eToken::T_AND},
+        {"like", eToken::T_LIKE},
+        {"date", eToken::T_DATE},
+        {">", eToken::T_MORE},
+        {"<", eToken::T_LESS},
+        {"<=", eToken::T_LESS_OR_EQ},
+        {">=", eToken::T_MORE_OR_EQ},
+        {"=", eToken::T_EQUAL}
     };
 
     struct Lexer {
-        auto getToken(const std::string& t_str) -> const Token;
+        auto getToken(const std::string& t_str) -> const eToken;
 
         auto getData() const noexcept -> const std::string&;
+    public:
+        static inline std::size_t ptr = 0;
     private:
         std::string m_data;
     };
