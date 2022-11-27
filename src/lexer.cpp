@@ -44,5 +44,5 @@ auto Lexer::getData() const noexcept -> const std::string& { return m_data; }
 
 auto Lexer::getLastToken() const noexcept -> const eToken { return m_tok; }
 
-auto Lexer::getBools() noexcept -> decltype(all_bool)& { return all_bool; }
+auto Lexer::getBools() noexcept -> std::pair<array<bool>, array<bool>>& { return all_bool; }
 } // namespace task

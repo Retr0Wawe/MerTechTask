@@ -52,7 +52,7 @@ struct Lexer {
     eToken m_tok;
 
   public:
-    auto getBools() noexcept -> decltype(all_bool)&;
+    auto getBools() noexcept -> std::pair<array<bool>, array<bool>>&;
 };
 } // namespace task
 

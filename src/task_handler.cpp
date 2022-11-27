@@ -96,18 +96,21 @@ auto TaskHandler::selectTask(const std::string& t_data) -> void {
     auto& bools_sub_str = m_lex.getBools().second;
 
     for (auto& task : m_tasks) {
-        auto cr = task.second.m_criteria;
-        auto sub_str = task.second.m_sub_str;
+        auto& cr = task.second.m_criteria;
+        auto& sub_str = task.second.m_sub_str;
         if (cr[0] == bools_cr[0] && cr[1] == bools_cr[1] && cr[2] == bools_cr[2] &&
             sub_str[0] == bools_sub_str[0] && sub_str[1] == bools_sub_str[1] &&
             sub_str[2] == bools_sub_str[2]) {
             printTask(task.first, task.second);
         }
+        cr = { 0 };
+        sub_str = { 0 };
     }
+    
+    // Null value for parse other string
 
-    std::cout << std::endl;
-    bools_cr.fill(0);
-    bools_sub_str.fill(0);
+    bools_cr = { 0 };
+    bools_sub_str = { 0 };
     m_lex.ptr = 0;
 }
 

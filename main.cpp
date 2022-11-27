@@ -3,6 +3,8 @@
 using namespace task;
 
 int main() {
+    // Тестовые входные данные
+
     TaskHandler handler;
 
     std::pair<std::string, block_of_task> test = {};
@@ -32,7 +34,7 @@ int main() {
 
     test2.first = "test_task3";
 
-    test2.second.m_data[DESC] = "test2";
+    test2.second.m_data[DESC] = "test23";
 
     test2.second.m_data[DATE] = "2022-12-12 00:20";
 
@@ -55,4 +57,5 @@ int main() {
     // select * where date < \"2020-12-12-00:00\"
     // "select * where date < \"2020-12-12 00:00\" and category=\"lol\""
     // "select * where category like \"lol\""
+    // select * where category="kekov"
 }
