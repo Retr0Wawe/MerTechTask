@@ -78,31 +78,42 @@ auto TaskHandler::selectTask(const std::string& t_data) -> void {
 
     if (tok == eToken::T_WHERE) {
         while ((tok = m_lex.getToken(m_str_format)) != eToken::T_ERROR) {
+            auto pos = m_lex.ptr; // Save position for parse each token
             for (auto& task : m_tasks) {
                 if (!handleTokens(task.second, tok)) {
                     break;
                 }
+                m_lex.ptr = pos;
             }
+            m_lex.getToken(m_str_format);
         }
     } else {
         std::cout << "Command select: unrecognized expression" << std::endl << std::endl;
+        return;
     }
 
-    //std::pair<std::array<bool, ALL>, std::array<bool, ALL>> all_bool;
+    auto& bools_cr = m_lex.getBools().first;
+    auto& bools_sub_str = m_lex.getBools().second;
 
-    auto bools = m_lex.getBools().first;
-
-    for (const auto& b : bools) {
-        std::cout << b << " ";
+    for (auto& task : m_tasks) {
+        auto cr = task.second.m_criteria;
+        auto sub_str = task.second.m_sub_str;
+        if (cr[0] == bools_cr[0] && cr[1] == bools_cr[1] && cr[2] == bools_cr[2] &&
+            sub_str[0] == bools_sub_str[0] && sub_str[1] == bools_sub_str[1] &&
+            sub_str[2] == bools_sub_str[2]) {
+            printTask(task.first, task.second);
+        }
     }
+
     std::cout << std::endl;
-
-    // обработка всех флагов которые были установлены
-
+    bools_cr.fill(0);
+    bools_sub_str.fill(0);
     m_lex.ptr = 0;
 }
 
 auto TaskHandler::handleTokens(block_of_task& t_task, const eToken t_tok) noexcept -> bool {
+    eToken new_tok;
+
     switch (t_tok) {
     case eToken::T_DATE:
         handleDate(t_task);
@@ -112,10 +123,14 @@ auto TaskHandler::handleTokens(block_of_task& t_task, const eToken t_tok) noexce
         handleParam(t_task, t_tok);
         break;
     case eToken::T_AND:
-        m_lex.getToken(m_str_format);
+        new_tok = m_lex.getToken(m_str_format);
+        if (new_tok == eToken::T_DATE) {
+            handleDate(t_task);
+        } else {
+            handleParam(t_task, new_tok);
+        }
         break;
     default:
-        std::cout << "Command select: unrecognized param" << std::endl << std::endl;
         return false;
     }
 
@@ -143,7 +158,6 @@ auto TaskHandler::handleParam(block_of_task& t_task, const eToken t_tok) noexcep
     auto tok = m_lex.getToken(m_str_format);
 
     if (tok != eToken::T_EQUAL && tok != eToken::T_LIKE) {
-        std::cout << "Command select: invalid param" << std::endl << std::endl;
         return;
     }
 
@@ -237,6 +251,19 @@ auto TaskHandler::printTasks() const noexcept -> void {
             std::cout << "Task done" << std::endl << std::endl;
         }
         std::cout << std::endl;
+    }
+}
+
+auto TaskHandler::printTask(const std::string& t_name, const block_of_task& t_task) const noexcept
+    -> void {
+    std::cout << std::endl;
+    std::cout << "Task: " << t_name << std::endl;
+    if (!t_task.m_is_done) {
+        std::cout << "Description: " << t_task.m_data[eDataType::DESC] << std::endl;
+        std::cout << "Date: " << t_task.m_data[eDataType::DATE] << std::endl;
+        std::cout << "Category: " << t_task.m_data[eDataType::CATEGORY] << std::endl;
+    } else {
+        std::cout << "Task done" << std::endl << std::endl;
     }
 }
 

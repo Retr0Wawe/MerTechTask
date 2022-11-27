@@ -11,10 +11,8 @@ auto Lexer::getToken(const std::string& t_str) -> const eToken {
         }
 
         if (auto it = g_tokens.find(temp); it != g_tokens.end()) {
-            if (!all_bool.first[(int)it->second]) {
-                all_bool.first[(int)it->second] = 1;
-            }
-            return it->second;
+            setBoolIfFind(it->second);
+            return (m_tok = it->second);
         }
 
         if (t_str.at(ptr) == '\"') {
@@ -25,7 +23,7 @@ auto Lexer::getToken(const std::string& t_str) -> const eToken {
             }
             ptr++;
             m_data = std::move(temp);
-            return eToken::T_WORD;
+            return (m_tok = eToken::T_WORD);
         } else {
             temp.push_back(t_str.at(ptr));
         }
@@ -33,7 +31,18 @@ auto Lexer::getToken(const std::string& t_str) -> const eToken {
     return eToken::T_ERROR;
 }
 
+auto Lexer::setBoolIfFind(const eToken t_tok) noexcept -> void {
+    switch (t_tok) {
+    case eToken::T_DESC:
+    case eToken::T_DATE:
+    case eToken::T_CATEGORY:
+        all_bool.first[static_cast<eDataType>(t_tok)] = 1;
+    }
+}
+
 auto Lexer::getData() const noexcept -> const std::string& { return m_data; }
+
+auto Lexer::getLastToken() const noexcept -> const eToken { return m_tok; }
 
 auto Lexer::getBools() noexcept -> decltype(all_bool)& { return all_bool; }
 } // namespace task

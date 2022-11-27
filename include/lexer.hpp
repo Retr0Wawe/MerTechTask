@@ -34,9 +34,13 @@ inline std::unordered_map<std::string, eToken> g_tokens = {
 struct Lexer {
     template <class T> using array = std::array<T, ALL>;
 
+    auto setBoolIfFind(const eToken t_tok) noexcept -> void;
+
     auto getToken(const std::string& t_str) -> const eToken;
 
     auto getData() const noexcept -> const std::string&;
+
+    auto getLastToken() const noexcept -> const eToken;
 
   public:
     static inline std::size_t ptr = 0;
@@ -45,6 +49,7 @@ struct Lexer {
     // First array for set Tokens, second for set if substr find
     std::pair<array<bool>, array<bool>> all_bool;
     std::string m_data;
+    eToken m_tok;
 
   public:
     auto getBools() noexcept -> decltype(all_bool)&;
