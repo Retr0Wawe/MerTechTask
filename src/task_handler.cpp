@@ -89,28 +89,13 @@ auto TaskHandler::selectTask(const std::string& t_data) -> void {
         }
     } else {
         std::cout << "Command select: unrecognized expression" << std::endl << std::endl;
+        m_lex.ptr = 0;
         return;
     }
 
-    auto& bools_cr = m_lex.getBools().first;
-    auto& bools_sub_str = m_lex.getBools().second;
+    printSort(m_lex);
 
-    for (auto& task : m_tasks) {
-        auto& cr = task.second.m_criteria;
-        auto& sub_str = task.second.m_sub_str;
-        if (cr[0] == bools_cr[0] && cr[1] == bools_cr[1] && cr[2] == bools_cr[2] &&
-            sub_str[0] == bools_sub_str[0] && sub_str[1] == bools_sub_str[1] &&
-            sub_str[2] == bools_sub_str[2]) {
-            printTask(task.first, task.second);
-        }
-        cr = { 0 };
-        sub_str = { 0 };
-    }
-    
     // Null value for parse other string
-
-    bools_cr = { 0 };
-    bools_sub_str = { 0 };
     m_lex.ptr = 0;
 }
 
@@ -141,11 +126,11 @@ auto TaskHandler::handleTokens(block_of_task& t_task, const eToken t_tok) noexce
 }
 
 auto TaskHandler::handleDate(block_of_task& t_task) noexcept -> void {
-    auto tok = m_lex.getToken(m_str_format);
+    auto new_tok = m_lex.getToken(m_str_format);
     m_lex.getToken(m_str_format);
     auto data = m_lex.getData();
 
-    switch (tok) {
+    switch (new_tok) {
     case eToken::T_MORE:
         t_task.m_criteria[DATE] = t_task > data;
         break;
@@ -153,6 +138,17 @@ auto TaskHandler::handleDate(block_of_task& t_task) noexcept -> void {
     case eToken::T_LESS:
         t_task.m_criteria[DATE] = t_task < data;
         break;
+
+    case eToken::T_MORE_OR_EQ:
+        t_task.m_criteria[DATE] = t_task <= data;
+        break;
+
+    case eToken::T_LESS_OR_EQ:
+        t_task.m_criteria[DATE] = t_task >= data;
+        break;
+
+    case eToken::T_EQUAL:
+        t_task.m_criteria[DATE] = t_task == data;
     }
     // доделать остальные операторы
 }
@@ -192,7 +188,7 @@ auto TaskHandler::handleParam(block_of_task& t_task, const eToken t_tok) noexcep
 }
 
 auto TaskHandler::handleSubStr(block_of_task& t_task, const eToken t_tok) noexcept -> bool {
-    auto old_tok = static_cast<eDataType>(t_tok);
+    auto new_tok = static_cast<eDataType>(t_tok);
 
     if (m_lex.getToken(m_str_format) != eToken::T_WORD) {
         return false;
@@ -203,8 +199,10 @@ auto TaskHandler::handleSubStr(block_of_task& t_task, const eToken t_tok) noexce
     switch (t_tok) {
     case eToken::T_CATEGORY:
     case eToken::T_DESC:
-        if (t_task.m_data[old_tok].find(temp) != std::string::npos) {
-            t_task.m_sub_str[old_tok] = 1;
+        if (t_task.m_data[new_tok].find(temp) != std::string::npos) {
+            t_task.m_sub_str[new_tok] = 1; // Set all flags if find substr in token
+            t_task.m_criteria[new_tok] = 1;
+            m_lex.getBools().second[new_tok] = 1;
         }
         break;
     }
@@ -243,17 +241,8 @@ auto TaskHandler::parseCommand(const std::string& t_expr) -> const eCode {
 auto TaskHandler::getStorage() noexcept -> storage& { return m_tasks; }
 
 auto TaskHandler::printTasks() const noexcept -> void {
-    std::cout << std::endl;
     for (const auto& task : m_tasks) {
-        std::cout << "Task: " << task.first << std::endl;
-        if (!task.second.m_is_done) {
-            std::cout << "Description: " << task.second.m_data[eDataType::DESC] << std::endl;
-            std::cout << "Date: " << task.second.m_data[eDataType::DATE] << std::endl;
-            std::cout << "Category: " << task.second.m_data[eDataType::CATEGORY] << std::endl;
-        } else {
-            std::cout << "Task done" << std::endl << std::endl;
-        }
-        std::cout << std::endl;
+        printTask(task.first, task.second);
     }
 }
 
@@ -268,8 +257,27 @@ auto TaskHandler::printTask(const std::string& t_name, const block_of_task& t_ta
     } else {
         std::cout << "Task done" << std::endl << std::endl;
     }
+    std::cout << std::endl;
 }
 
-auto TaskHandler::printSort() const noexcept -> void {}
+auto TaskHandler::printSort(Lexer& t_lex) noexcept -> void {
+    auto& bools_cr = t_lex.getBools().first;
+    auto& bools_sub_str = t_lex.getBools().second;
+
+    for (auto& task : m_tasks) {
+        auto& cr = task.second.m_criteria;
+        auto& sub_str = task.second.m_sub_str;
+        if (cr[0] == bools_cr[0] && cr[1] == bools_cr[1] && cr[2] == bools_cr[2] &&
+            sub_str[0] == bools_sub_str[0] && sub_str[1] == bools_sub_str[1] &&
+            sub_str[2] == bools_sub_str[2]) {
+            printTask(task.first, task.second);
+        }
+        cr = {0};
+        sub_str = {0};
+    }
+
+    bools_cr = {0};
+    bools_sub_str = {0};
+}
 
 } // namespace task

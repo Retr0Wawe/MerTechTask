@@ -44,16 +44,13 @@ int main() {
     handler.getStorage().insert(test1);
     handler.getStorage().insert(test2);
 
-    try {
-        std::string string;
+    std::string string;
 
-        do {
-            std::cout << ">> ";
-            std::getline(std::cin, string);
-        } while (handler.parseCommand(string) != eCode::STOP);
-    } catch (const std::runtime_error& err) {
-        std::cout << err.what() << std::endl;
-    }
+    do {
+        std::cout << std::endl << ">> ";
+        std::getline(std::cin, string);
+    } while (handler.parseCommand(string) != eCode::STOP);
+
     // select * where date < \"2020-12-12-00:00\"
     // "select * where date < \"2020-12-12 00:00\" and category=\"lol\""
     // "select * where category like \"lol\""

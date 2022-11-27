@@ -21,11 +21,11 @@ struct block_of_task {
         return t_task.m_data[DATE] > t_data;
     }
 
-    friend bool operator<=(const std::string&, const std::string&) noexcept {}
+    friend bool operator<=(const block_of_task& t_task, const std::string& t_data) noexcept {}
 
-    friend bool operator>=(const std::string&, const std::string&) noexcept {}
+    friend bool operator>=(const block_of_task& t_task, const std::string& t_data) noexcept {}
 
-    friend bool operator==(const std::string&, const std::string&) noexcept {}
+    friend bool operator==(const block_of_task& t_task, const std::string& t_data) noexcept {}
 
   public:
     std::array<std::string, eDataType::ALL> m_data;

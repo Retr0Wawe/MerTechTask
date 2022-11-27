@@ -23,7 +23,7 @@ auto Lexer::getToken(const std::string& t_str) -> const eToken {
             }
             ptr++;
             m_data = std::move(temp);
-            return (m_tok = eToken::T_WORD);
+            return eToken::T_WORD;
         } else {
             temp.push_back(t_str.at(ptr));
         }
@@ -32,11 +32,13 @@ auto Lexer::getToken(const std::string& t_str) -> const eToken {
 }
 
 auto Lexer::setBoolIfFind(const eToken t_tok) noexcept -> void {
+    auto new_tok = static_cast<eDataType>(getLastToken());
     switch (t_tok) {
     case eToken::T_DESC:
     case eToken::T_DATE:
     case eToken::T_CATEGORY:
         all_bool.first[static_cast<eDataType>(t_tok)] = 1;
+        break;
     }
 }
 
