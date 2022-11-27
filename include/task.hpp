@@ -9,6 +9,8 @@
 #include "lexer.hpp"
 
 namespace task {
+    // перенести это все в заголовный файл
+
     enum class eCode : int {
         EMPTY, NOT_FOUND, NOT_VALID, STOP,
         UNRECOGNIZED_STRING, SUCCES
@@ -25,7 +27,7 @@ namespace task {
 
         friend bool operator>(const block_of_task&, const std::string&) noexcept;
 
-        // friend bool operator<=(const std::string&, const std::string&) noexcept;
+        friend bool operator<=(const std::string&, const std::string&) noexcept;
 
         // friend bool operator>=(const std::string&, const std::string&) noexcept;
 
@@ -47,7 +49,7 @@ namespace task {
         TaskHandler(const TaskHandler&) = default;
 
         virtual ~TaskHandler() = default;
-    private:
+    protected:
         virtual auto addTask(const std::string& t_data) -> void;
 
         virtual auto doneTask(const std::string& t_data) noexcept -> void;
@@ -57,19 +59,20 @@ namespace task {
         virtual auto deleteTask(const std::string& t_data) noexcept -> void;
         
         virtual auto selectTask(const std::string& t_data) -> void;
+        
+        virtual auto handleTokens(block_of_task& t_task, const eToken t_tok) noexcept -> bool;
+
+        virtual auto handleDate(block_of_task& t_task) noexcept -> void;
+
+        virtual auto handleParam(block_of_task& t_task, const eToken t_tok) noexcept -> void;
+
+        virtual auto handleSubStr(block_of_task& t_task, const eToken t_tok) noexcept -> bool;
     public:
         auto printTasks() const noexcept -> void;
 
         auto parseCommand(const std::string& t_expr) -> const eCode;
-
         // Потом поменять на const!
         auto getStorage() noexcept -> storage&;
-
-        
-
-        auto handleDate(block_of_task& t_task, const std::string& t_data, const eToken t_tok) noexcept -> void;
-
-        auto handleTokens(block_of_task& t_task, const eToken t_tok) -> bool;
     public:
         TaskHandler& operator=(const TaskHandler&) = default;
 
