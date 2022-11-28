@@ -53,7 +53,7 @@ class TaskHandler {
     virtual auto printTask(const std::string& t_name, const block_of_task& t_task) const noexcept
         -> void;
 
-    virtual auto printSort(Lexer& t_lex) noexcept -> void;
+    auto printSort(Lexer& t_lex) noexcept -> void;
 
     virtual auto parseCommand(const std::string& t_expr) -> const eCode;
     // Потом поменять на const!

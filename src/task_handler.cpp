@@ -1,8 +1,6 @@
-#include "task_handler.hpp"
+п»ї#include "task_handler.hpp"
 
 #include <algorithm>
-#include <deque>
-#include <sstream>
 
 namespace task {
 auto TaskHandler::addTask(const std::string& t_data) -> void {
@@ -22,7 +20,7 @@ auto TaskHandler::addTask(const std::string& t_data) -> void {
 
     std::size_t prev = 0, next = 0, delta = 1;
 
-    std::size_t i = 0;
+    std::size_t i = 0; // Split strings by spaces
     while (i < block.second.m_data.size() && (next = str.find(' ', prev)) != std::string::npos) {
         block.second.m_data.at(i++) = str.substr(prev, next - prev);
         prev = next + delta;
@@ -51,6 +49,7 @@ auto TaskHandler::updateTask(const std::string& t_data) noexcept -> void {
         return;
     }
 
+    std::cout << "Enter your data: " << std::endl;
     for (auto& str : it->second.m_data) {
         std::getline(std::cin, str);
     }
@@ -150,7 +149,6 @@ auto TaskHandler::handleDate(block_of_task& t_task) noexcept -> void {
     case eToken::T_EQUAL:
         t_task.m_criteria[DATE] = t_task == data;
     }
-    // доделать остальные операторы
 }
 
 auto TaskHandler::handleParam(block_of_task& t_task, const eToken t_tok) noexcept -> void {
@@ -260,18 +258,25 @@ auto TaskHandler::printTask(const std::string& t_name, const block_of_task& t_ta
     std::cout << std::endl;
 }
 
+// Counts the number of true values вЂ‹вЂ‹and compares with the number of installed tokens
 auto TaskHandler::printSort(Lexer& t_lex) noexcept -> void {
     auto& bools_cr = t_lex.getBools().first;
     auto& bools_sub_str = t_lex.getBools().second;
 
+    auto b_cr_count = std::count(bools_cr.begin(), bools_cr.end(), true);
+    auto b_sub_str_count = std::count(bools_sub_str.begin(), bools_sub_str.end(), true);
+
     for (auto& task : m_tasks) {
         auto& cr = task.second.m_criteria;
         auto& sub_str = task.second.m_sub_str;
-        if (cr[0] == bools_cr[0] && cr[1] == bools_cr[1] && cr[2] == bools_cr[2] &&
-            sub_str[0] == bools_sub_str[0] && sub_str[1] == bools_sub_str[1] &&
-            sub_str[2] == bools_sub_str[2]) {
+
+        auto cr_count = std::count(cr.begin(), cr.end(), 1);
+        auto sub_str_count = std::count(sub_str.begin(), sub_str.end(), 1);
+
+        if (b_cr_count == cr_count && b_sub_str_count == sub_str_count) {
             printTask(task.first, task.second);
         }
+
         cr = {0};
         sub_str = {0};
     }

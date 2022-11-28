@@ -43,13 +43,14 @@ struct Lexer {
     auto getLastToken() const noexcept -> const eToken;
 
   public:
+    // Pointer to current symbol
     static inline std::size_t ptr = 0;
 
   private:
     // First array for set Tokens, second for set if substr find
     std::pair<array<bool>, array<bool>> all_bool;
     std::string m_data;
-    eToken m_tok;
+    eToken m_tok = {};
 
   public:
     auto getBools() noexcept -> std::pair<array<bool>, array<bool>>&;
