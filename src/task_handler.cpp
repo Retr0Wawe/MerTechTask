@@ -139,11 +139,11 @@ auto TaskHandler::handleDate(block_of_task& t_task) noexcept -> void {
         break;
 
     case eToken::T_MORE_OR_EQ:
-        t_task.m_criteria[DATE] = t_task <= data;
+        t_task.m_criteria[DATE] = t_task >= data;
         break;
 
     case eToken::T_LESS_OR_EQ:
-        t_task.m_criteria[DATE] = t_task >= data;
+        t_task.m_criteria[DATE] = t_task <= data;
         break;
 
     case eToken::T_EQUAL:
