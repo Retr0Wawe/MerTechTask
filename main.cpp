@@ -14,7 +14,7 @@ int main() {
     // DESC, DATE, CATEGORY
     test.second.m_data[DESC] = "test_task";
 
-    test.second.m_data[DATE] = "2020-12-12 00:20";
+    test.second.m_data[DATE] = "2023-12-12 20:20";
 
     test.second.m_data[CATEGORY] = "kekov";
 
@@ -26,7 +26,7 @@ int main() {
 
     test1.second.m_data[DESC] = "test";
 
-    test1.second.m_data[DATE] = "2022-12-12 00:20";
+    test1.second.m_data[DATE] = "2022-11-12 00:29";
 
     test1.second.m_data[CATEGORY] = "kekov";
     // ------------------------
@@ -36,7 +36,7 @@ int main() {
 
     test2.second.m_data[DESC] = "test23";
 
-    test2.second.m_data[DATE] = "2022-12-12 00:20";
+    test2.second.m_data[DATE] = "2022-12-11 10:20";
 
     test2.second.m_data[CATEGORY] = "lower";
 
