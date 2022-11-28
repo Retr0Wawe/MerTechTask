@@ -39,10 +39,32 @@ int main() {
     test2.second.m_data[DATE] = "2022-12-11 10:20";
 
     test2.second.m_data[CATEGORY] = "lower";
+    // ------------------------
+    std::pair<std::string, block_of_task> test3 = {};
+
+    test3.first = "test_task4";
+
+    test3.second.m_data[DESC] = "test23";
+
+    test3.second.m_data[DATE] = "2022-12-11 10:20";
+
+    test3.second.m_data[CATEGORY] = "lower";
+    // ------------------------
+    std::pair<std::string, block_of_task> test4 = {};
+
+    test4.first = "test_task5";
+
+    test4.second.m_data[DESC] = "23954test";
+
+    test4.second.m_data[DATE] = "1998-07-12 10:20";
+
+    test4.second.m_data[CATEGORY] = "slower";
 
     handler.getStorage().insert(test);
     handler.getStorage().insert(test1);
     handler.getStorage().insert(test2);
+    handler.getStorage().insert(test3);
+    handler.getStorage().insert(test4);
 
     std::string string;
 
