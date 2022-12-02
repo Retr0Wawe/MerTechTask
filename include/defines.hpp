@@ -14,17 +14,16 @@ enum class eCode : int { EMPTY, NOT_FOUND, NOT_VALID, STOP, UNRECOGNIZED_STRING,
 enum eDataType : int { DESC, DATE, CATEGORY, ALL };
 
 // Struct for parse date(example: "2020-12-12 00:00")
-
 // Date input format: 2020-12-12-00:00 (need delimeter!)
 // Date output format: 2020-12-12 00:00 (as in the original)
 struct date {
     date() : m_year(0), m_month(0), m_day(0), m_hour(0), m_minute(0) {}
 
   public:
-      friend std::ostream& operator<<(std::ostream& t_stream, const date& t_date);
+    friend std::ostream& operator<<(std::ostream& t_stream, const date& t_date);
 
     // Parse string and get values in date
-      static auto getDateFromStr(const std::string& t_data)->date;
+    static auto getDateFromStr(const std::string& t_data) -> date;
 
   public:
     unsigned int m_year;
@@ -35,9 +34,11 @@ struct date {
 };
 
 // Struct of task
+// Struct of task
 struct block_of_task {
   public:
-    // Comparison operators that work with std::tuple recursively calling the overloaded operators for each type
+    // Comparison operators that work with std::tuple recursively calling the overloaded operators
+    // for each type
     friend bool operator<(const block_of_task& t_task, const std::string& t_data) noexcept;
 
     friend bool operator>(const block_of_task& t_task, const std::string& t_data) noexcept;

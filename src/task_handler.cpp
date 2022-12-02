@@ -236,7 +236,7 @@ auto TaskHandler::parseCommand(const std::string& t_expr) -> const eCode {
     return eCode::SUCCES;
 }
 
-auto TaskHandler::getStorage() noexcept -> storage& { return m_tasks; }
+auto TaskHandler::getStorage() const noexcept -> const storage& { return m_tasks; }
 
 auto TaskHandler::printTasks() const noexcept -> void {
     for (const auto& task : m_tasks) {
