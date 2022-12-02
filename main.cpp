@@ -3,7 +3,7 @@
 using namespace task;
 
 int main() {
-    // Тестовые входные данные
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
     TaskHandler handler;
 
@@ -58,7 +58,7 @@ int main() {
 
     test4.second.m_data[DATE] = "1998-07-12 10:20";
 
-    test4.second.m_data[CATEGORY] = "slower";
+    test4 .second.m_data[CATEGORY] = "slower";
 
     handler.getStorage().insert(test);
     handler.getStorage().insert(test1);
