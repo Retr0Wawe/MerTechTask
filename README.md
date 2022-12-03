@@ -6,3 +6,5 @@ A simple task management program.
 3) Sort task by date, substring and parameter equality on content
 ## Requirements
 1) cmake
+## In progress
+1) write gui version of this project
