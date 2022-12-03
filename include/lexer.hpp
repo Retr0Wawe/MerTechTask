@@ -25,21 +25,29 @@ enum class eToken : int {
     T_EQUAL
 };
 
+// Map for storage tokens
 inline std::unordered_map<std::string, eToken> g_tokens = {
     {"\"", eToken::T_QUOT},          {"where", eToken::T_WHERE},   {"and", eToken::T_AND},
     {"like", eToken::T_LIKE},        {"date", eToken::T_DATE},     {"category", eToken::T_CATEGORY},
     {"description", eToken::T_DESC}, {">", eToken::T_MORE},        {"<", eToken::T_LESS},
     {"<=", eToken::T_LESS_OR_EQ},    {">=", eToken::T_MORE_OR_EQ}, {"=", eToken::T_EQUAL}};
 
-struct Lexer {
-    template <class T> using array = std::array<T, ALL>;
+// Struct for storage bools
+struct boolStorage {
+    // An array for storage result from find sub string
+    std::array<bool, ALL> m_sub_str;
+    // An array to store matching criteria and parameters
+    std::array<bool, ALL> m_criteria;
+};
 
+// Struct of lexer 
+struct Lexer {
     auto setBoolIfFind(const eToken t_tok) noexcept -> void;
 
     auto getToken(const std::string& t_str) -> const eToken;
 
     auto getData() const noexcept -> const std::string&;
-
+    // Get last token
     auto getLastToken() const noexcept -> const eToken;
 
   public:
@@ -48,12 +56,12 @@ struct Lexer {
 
   private:
     // First array for set Tokens, second for set if substr find
-    std::pair<array<bool>, array<bool>> all_bool;
+    boolStorage m_all_bool;
     std::string m_data;
     eToken m_tok = {};
 
   public:
-    auto getBools() noexcept -> std::pair<array<bool>, array<bool>>&;
+    auto getBools() noexcept -> boolStorage&;
 };
 } // namespace task
 

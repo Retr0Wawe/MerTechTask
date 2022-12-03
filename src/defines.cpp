@@ -8,6 +8,7 @@ std::ostream& operator<<(std::ostream& t_stream, const date& t_date) {
     return t_stream;
 }
 
+// Function for give ints from string
 auto date::getDateFromStr(const std::string& t_data) -> date {
     std::istringstream input(t_data);
     date d;
@@ -22,6 +23,7 @@ auto date::getDateFromStr(const std::string& t_data) -> date {
     return d;
 }
 
+// Overload operators
 bool operator<(const block_of_task& t_task, const std::string& t_data) noexcept {
     auto date_task = date::getDateFromStr(t_task.m_data[DATE]);
     auto date_str = date::getDateFromStr(t_data);

@@ -1,6 +1,7 @@
 #include "lexer.hpp"
 
 namespace task {
+// Function which parse tokens
 auto Lexer::getToken(const std::string& t_str) -> const eToken {
     std::string temp;
 
@@ -11,8 +12,8 @@ auto Lexer::getToken(const std::string& t_str) -> const eToken {
         }
 
         if (auto it = g_tokens.find(temp); it != g_tokens.end()) {
-            setBoolIfFind(it->second);
-            return (m_tok = it->second);
+            setBoolIfFind(it->second);    // Set bool if token was be set
+            return (m_tok = it->second);  // Find and return token
         }
 
         if (t_str.at(ptr) == '\"') {
@@ -37,7 +38,7 @@ auto Lexer::setBoolIfFind(const eToken t_tok) noexcept -> void {
     case eToken::T_DESC:
     case eToken::T_DATE:
     case eToken::T_CATEGORY:
-        all_bool.first[static_cast<eDataType>(t_tok)] = 1;
+        m_all_bool.m_criteria[static_cast<eDataType>(t_tok)] = 1;
         break;
     }
 }
@@ -46,5 +47,5 @@ auto Lexer::getData() const noexcept -> const std::string& { return m_data; }
 
 auto Lexer::getLastToken() const noexcept -> const eToken { return m_tok; }
 
-auto Lexer::getBools() noexcept -> std::pair<array<bool>, array<bool>>& { return all_bool; }
+auto Lexer::getBools() noexcept -> boolStorage& { return m_all_bool; }
 } // namespace task

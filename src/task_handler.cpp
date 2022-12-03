@@ -124,6 +124,7 @@ auto TaskHandler::handleTokens(block_of_task& t_task, const eToken t_tok) noexce
     return true;
 }
 
+// Parse "date < [some date]"
 auto TaskHandler::handleDate(block_of_task& t_task) noexcept -> void {
     auto new_tok = m_lex.getToken(m_str_format);
     m_lex.getToken(m_str_format);
@@ -200,7 +201,7 @@ auto TaskHandler::handleSubStr(block_of_task& t_task, const eToken t_tok) noexce
         if (t_task.m_data[new_tok].find(temp) != std::string::npos) {
             t_task.m_sub_str[new_tok] = 1; // Set all flags if find substr in token
             t_task.m_criteria[new_tok] = 1;
-            m_lex.getBools().second[new_tok] = 1;
+            m_lex.getBools().m_sub_str[new_tok] = 1;
         }
         break;
     }
@@ -260,8 +261,8 @@ auto TaskHandler::printTask(const std::string& t_name, const block_of_task& t_ta
 
 // Counts the number of true values ​​and compares with the number of installed tokens
 auto TaskHandler::printSort(Lexer& t_lex) noexcept -> void {
-    auto& bools_cr = t_lex.getBools().first;
-    auto& bools_sub_str = t_lex.getBools().second;
+    auto& bools_cr = t_lex.getBools().m_criteria;
+    auto& bools_sub_str = t_lex.getBools().m_sub_str;
 
     auto b_cr_count = std::count(bools_cr.begin(), bools_cr.end(), true);
     auto b_sub_str_count = std::count(bools_sub_str.begin(), bools_sub_str.end(), true);

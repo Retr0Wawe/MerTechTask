@@ -28,6 +28,7 @@ class TaskHandler {
     TaskHandler& operator=(TaskHandler&&) = default;
 
   public:
+    // Functions for work with tasks
     virtual auto addTask(const std::string& t_data) -> void;
 
     virtual auto doneTask(const std::string& t_data) noexcept -> void;
@@ -39,6 +40,7 @@ class TaskHandler {
     virtual auto selectTask(const std::string& t_data) -> void;
 
   protected:
+    // Handle parse tokens
     virtual auto handleTokens(block_of_task& t_task, const eToken t_tok) noexcept -> bool;
 
     virtual auto handleDate(block_of_task& t_task) noexcept -> void;
@@ -48,6 +50,7 @@ class TaskHandler {
     virtual auto handleSubStr(block_of_task& t_task, const eToken t_tok) noexcept -> bool;
 
   public:
+    // Print tasks
     virtual auto printTasks() const noexcept -> void;
 
     virtual auto printTask(const std::string& t_name, const block_of_task& t_task) const noexcept
@@ -56,7 +59,7 @@ class TaskHandler {
     virtual auto printSort(Lexer& t_lex) noexcept -> void;
 
     virtual auto parseCommand(const std::string& t_expr) -> const eCode;
-
+    // Get data
     auto getStorage() const noexcept -> const storage&;
 
   private:
