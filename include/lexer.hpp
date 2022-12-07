@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <string_view>
 
 #include "defines.hpp"
 
@@ -44,7 +45,7 @@ struct boolStorage {
 struct Lexer {
     auto setBoolIfFind(const eToken t_tok) noexcept -> void;
 
-    auto getToken(const std::string& t_str) -> const eToken;
+    auto getToken(std::string_view t_str) -> const eToken;
 
     auto getData() const noexcept -> const std::string&;
     // Get last token

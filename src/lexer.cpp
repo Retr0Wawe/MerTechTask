@@ -2,7 +2,7 @@
 
 namespace task {
 // Function which parse tokens
-auto Lexer::getToken(const std::string& t_str) -> const eToken {
+auto Lexer::getToken(std::string_view t_str) -> const eToken {
     std::string temp;
 
     temp.reserve(25);

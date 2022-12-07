@@ -9,9 +9,10 @@
 #include "lexer.hpp"
 
 namespace task {
+
 // Class for handler all tasks
 class TaskHandler {
-    using storage = std::unordered_map<std::string, block_of_task>;
+    using storage = std::unordered_map<std::string, block_of_task, string_hash, string_equal>;
 
   public:
     TaskHandler() = default;
@@ -29,15 +30,15 @@ class TaskHandler {
 
   public:
     // Functions for work with tasks
-    virtual auto addTask(const std::string& t_data) -> void;
+    virtual auto addTask(std::string_view t_data) -> void;
 
-    virtual auto doneTask(const std::string& t_data) noexcept -> void;
+    virtual auto doneTask(std::string_view t_data) noexcept -> void;
 
-    virtual auto updateTask(const std::string& t_data) noexcept -> void;
+    virtual auto updateTask(std::string_view t_data) noexcept -> void;
 
-    virtual auto deleteTask(const std::string& t_data) noexcept -> void;
+    virtual auto deleteTask(std::string_view t_data) noexcept -> void;
 
-    virtual auto selectTask(const std::string& t_data) -> void;
+    virtual auto selectTask(std::string_view t_data) -> void;
 
   protected:
     // Handle parse tokens
@@ -53,12 +54,12 @@ class TaskHandler {
     // Print tasks
     virtual auto printTasks() const noexcept -> void;
 
-    virtual auto printTask(const std::string& t_name, const block_of_task& t_task) const noexcept
+    virtual auto printTask(std::string_view t_name, const block_of_task& t_task) const noexcept
         -> void;
 
     virtual auto printSort(Lexer& t_lex) noexcept -> void;
 
-    virtual auto parseCommand(const std::string& t_expr) -> const eCode;
+    virtual auto parseCommand(std::string_view t_expr) -> const eCode;
     // Get data
     auto getStorage() const noexcept -> const storage&;
 

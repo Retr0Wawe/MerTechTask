@@ -3,7 +3,7 @@
 #include <algorithm>
 
 namespace task {
-auto TaskHandler::addTask(const std::string& t_data) -> void {
+auto TaskHandler::addTask(std::string_view t_data) -> void {
     std::pair<std::string, block_of_task> block = {};
 
     // Check string for valid
@@ -30,7 +30,7 @@ auto TaskHandler::addTask(const std::string& t_data) -> void {
     m_tasks.insert(block);
 }
 
-auto TaskHandler::doneTask(const std::string& t_data) noexcept -> void {
+auto TaskHandler::doneTask(std::string_view t_data) noexcept -> void {
     auto it = m_tasks.find(t_data);
 
     if (it == m_tasks.end()) {
@@ -41,7 +41,7 @@ auto TaskHandler::doneTask(const std::string& t_data) noexcept -> void {
     it->second.m_is_done = true;
 }
 
-auto TaskHandler::updateTask(const std::string& t_data) noexcept -> void {
+auto TaskHandler::updateTask(std::string_view t_data) noexcept -> void {
     auto it = m_tasks.find(t_data);
 
     if (it == m_tasks.end()) {
@@ -55,7 +55,7 @@ auto TaskHandler::updateTask(const std::string& t_data) noexcept -> void {
     }
 }
 
-auto TaskHandler::deleteTask(const std::string& t_data) noexcept -> void {
+auto TaskHandler::deleteTask(std::string_view t_data) noexcept -> void {
     auto it = m_tasks.find(t_data);
 
     if (it == m_tasks.end()) {
@@ -66,7 +66,7 @@ auto TaskHandler::deleteTask(const std::string& t_data) noexcept -> void {
     m_tasks.erase(it);
 }
 
-auto TaskHandler::selectTask(const std::string& t_data) -> void {
+auto TaskHandler::selectTask(std::string_view t_data) -> void {
     if (t_data == "*") {
         printTasks();
         return;
@@ -208,7 +208,7 @@ auto TaskHandler::handleSubStr(block_of_task& t_task, const eToken t_tok) noexce
     return true;
 }
 
-auto TaskHandler::parseCommand(const std::string& t_expr) -> const eCode {
+auto TaskHandler::parseCommand(std::string_view t_expr) -> const eCode {
     if (t_expr.empty()) {
         return eCode::EMPTY;
     }
@@ -245,7 +245,7 @@ auto TaskHandler::printTasks() const noexcept -> void {
     }
 }
 
-auto TaskHandler::printTask(const std::string& t_name, const block_of_task& t_task) const noexcept
+auto TaskHandler::printTask(std::string_view t_name, const block_of_task& t_task) const noexcept
     -> void {
     std::cout << std::endl;
     std::cout << "Task: " << t_name << std::endl;

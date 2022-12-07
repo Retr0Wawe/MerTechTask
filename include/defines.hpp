@@ -2,7 +2,7 @@
 #define DEFINES_HPP_
 
 #include <array>
-#include <iostream>
+#include <ostream>
 #include <sstream>
 #include <tuple>
 
@@ -14,7 +14,7 @@ enum class eCode : int { EMPTY, NOT_FOUND, NOT_VALID, STOP, UNRECOGNIZED_STRING,
 enum eDataType : int { DESC, DATE, CATEGORY, ALL };
 
 // Struct for parse date(example: "2020-12-12 00:00")
-// Date input format: 2020-12-12-00:00 (need delimeter!)
+// Date input format: 2020-12-12-00:00 (need delimeter)
 // Date output format: 2020-12-12 00:00 (as in the original)
 struct date {
     date() : m_year(0), m_month(0), m_day(0), m_hour(0), m_minute(0) {}
@@ -55,6 +55,23 @@ struct block_of_task {
     std::array<bool, eDataType::ALL> m_sub_str = {0};
     bool m_is_done = 0;
 };
+
+// Own overload operator== for string_view
+struct string_equal {
+    using is_transparent = std::true_type;
+
+    bool operator()(std::string_view l, std::string_view r) const noexcept { return l == r; }
+};
+
+// Own overload operator() for generate hash for string_view(need in unordered map)
+struct string_hash {
+    using is_transparent = std::true_type;
+
+    auto operator()(std::string_view str) const noexcept {
+        return std::hash<std::string_view>()(str);
+    }
+};
+
 } // namespace task
 
 #endif // !DEFINES_HPP_
