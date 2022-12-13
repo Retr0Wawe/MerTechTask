@@ -6,6 +6,10 @@
 #include <sstream>
 #include <tuple>
 
+#define NAME "TaskManager"
+#define SPACE " "
+#define VERSION "1.0"
+
 namespace task {
 // Different codes for handle functions
 enum class eCode : int { EMPTY, NOT_FOUND, NOT_VALID, STOP, UNRECOGNIZED_STRING, SUCCES };

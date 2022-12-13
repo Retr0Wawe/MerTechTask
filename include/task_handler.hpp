@@ -10,7 +10,7 @@
 
 namespace task {
 
-// Class for handler all tasks
+// Class for handle tasks
 class TaskHandler {
     using storage = std::unordered_map<std::string, block_of_task, string_hash, string_equal>;
 

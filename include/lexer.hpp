@@ -27,7 +27,7 @@ enum class eToken : int {
 };
 
 // Map for storage tokens
-inline std::unordered_map<std::string, eToken> g_tokens = {
+inline const std::unordered_map<std::string, eToken> g_tokens = {
     {"\"", eToken::T_QUOT},          {"where", eToken::T_WHERE},   {"and", eToken::T_AND},
     {"like", eToken::T_LIKE},        {"date", eToken::T_DATE},     {"category", eToken::T_CATEGORY},
     {"description", eToken::T_DESC}, {">", eToken::T_MORE},        {"<", eToken::T_LESS},

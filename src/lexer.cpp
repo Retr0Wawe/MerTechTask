@@ -18,8 +18,7 @@ auto Lexer::getToken(std::string_view t_str) -> const eToken {
 
         if (t_str.at(ptr) == '\"') {
             m_data.clear();
-            char ch = 0;
-            while ((ch = t_str.at(++ptr)) != '\"') {
+            while (t_str.at(++ptr) != '\"') {
                 temp.push_back(t_str.at(ptr));
             }
             ptr++;

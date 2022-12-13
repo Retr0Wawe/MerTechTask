@@ -1,26 +1,11 @@
-#include "include/task_handler.hpp"
+#include "gui/mainwindow.hpp"
 
-using namespace task;
+#include <QApplication>
 
-/* INSTRUCTIONS:
-    1) add task_name description date(like: 2020-12-12-00:00) category - adds a task
-    
-    2) done task_name - marks the task as finished
-
-    3) update task_name (and you shuold be enter your new date) - updates the task with your data
-
-    4) delete task_name - removes a task from the list
-
-    5) select * where {predicate} - provides output filtering by given parameters and keywords
-*/
-
-int main() {
-    TaskHandler handler, handler2;
-    std::string string;
-    // Entry point
-    do {
-        std::cout << std::endl << ">> ";
-        std::getline(std::cin, string);
-        std::cout << std::endl;
-    } while (handler.parseCommand(string) != eCode::STOP);
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+    return a.exec();
 }
