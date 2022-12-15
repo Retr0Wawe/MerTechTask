@@ -30,14 +30,13 @@ struct date {
     static auto getDateFromStr(const std::string& t_data) -> date;
 
   public:
-    unsigned int m_year;
-    unsigned int m_month;
-    unsigned int m_day;
-    unsigned int m_hour;
-    unsigned int m_minute;
+    std::uint32_t m_year;
+    std::uint32_t m_month;
+    std::uint32_t m_day;
+    std::uint32_t m_hour;
+    std::uint32_t m_minute;
 };
 
-// Struct of task
 // Struct of task
 struct block_of_task {
   public:

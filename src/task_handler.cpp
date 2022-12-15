@@ -1,9 +1,10 @@
 ﻿#include "task_handler.hpp"
 
 #include <algorithm>
+#include <QStandardItemModel>
 
 namespace task {
-auto TaskHandler::addTask(std::string_view t_data) -> void {
+auto TaskHandler::addTask(std::string_view t_data) -> std::string {
     std::pair<std::string, block_of_task> block = {};
 
     // Check string for valid
@@ -11,7 +12,7 @@ auto TaskHandler::addTask(std::string_view t_data) -> void {
 
     if (c > 3 || c <= 1) {
         std::cout << "Command add: invalid string" << std::endl << std::endl;
-        return;
+        return {};
     }
 
     auto word = t_data.find_first_of(' ');
@@ -28,6 +29,9 @@ auto TaskHandler::addTask(std::string_view t_data) -> void {
 
     block.second.m_data.at(i) = str.substr(prev);
     m_tasks.insert(block);
+
+    // Return task name
+    return block.first;
 }
 
 auto TaskHandler::doneTask(std::string_view t_data) noexcept -> void {
@@ -284,6 +288,32 @@ auto TaskHandler::printSort(Lexer& t_lex) noexcept -> void {
 
     bools_cr = {0};
     bools_sub_str = {0};
+}
+
+QTaskHandler::QTaskHandler(QStandardItemModel* model): m_model(model)
+{   }
+
+auto QTaskHandler::InsertTaskInModel(QStandardItemModel* t_model, QStringView t_name) noexcept -> void
+{
+    t_model->insertRow(0);
+
+    // Set data from task to model
+    t_model->setData(t_model->index(0, 0), t_name.toString());
+    for (int j = 0, i = 1; i < ALL + 1; i++, j++) {
+        auto str = QString::fromStdString(m_tasks.at(t_name.toString().toStdString()).m_data[i]);
+        t_model->setData(t_model->index(0, i), QString::fromStdString(m_tasks.at(t_name.toString().toStdString()).m_data[j]));
+    }
+}
+
+auto QTaskHandler::addTask(std::string_view t_data) -> std::string
+{
+    auto task_name = TaskHandler::addTask(t_data);
+
+    if (!task_name.empty()) {
+        InsertTaskInModel(m_model, QString::fromStdString(task_name));
+    }
+
+    return task_name;
 }
 
 } // namespace task

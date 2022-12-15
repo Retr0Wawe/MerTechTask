@@ -11,12 +11,12 @@ std::ostream& operator<<(std::ostream& t_stream, const date& t_date) {
 // Function for give ints from string
 auto date::getDateFromStr(const std::string& t_data) -> date {
     std::istringstream input(t_data);
+    std::string str_line;
     date d;
 
-    std::string str;
     char c = 0;
-    while (std::getline(input, str)) {
-        std::istringstream is(str);
+    while (std::getline(input, str_line)) {
+        std::istringstream is(str_line);
         is >> d.m_year >> c >> d.m_month >> c >> d.m_day >> c >> d.m_hour >> c >> d.m_minute;
     }
 

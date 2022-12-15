@@ -4,9 +4,20 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <QString>
 
 #include "defines.hpp"
 #include "lexer.hpp"
+
+/* INSTRUCTIONS:
+    1) add task_name description date(like: 2020-12-12-00:00) category - adds a task
+    2) done task_name - marks the task as finished
+    3) update task_name (and you shuold be enter your new date) - updates the task with your data
+    4) delete task_name - removes a task from the list
+    5) select * where {predicate} - provides output filtering by given parameters and keywords
+*/
+
+class QStandardItemModel;
 
 namespace task {
 
@@ -30,7 +41,7 @@ class TaskHandler {
 
   public:
     // Functions for work with tasks
-    virtual auto addTask(std::string_view t_data) -> void;
+    virtual auto addTask(std::string_view t_data) -> std::string;
 
     virtual auto doneTask(std::string_view t_data) noexcept -> void;
 
@@ -63,11 +74,25 @@ class TaskHandler {
     // Get data
     auto getStorage() const noexcept -> const storage&;
 
-  private:
+  protected:
     std::string m_str_format;
     storage m_tasks;
     Lexer m_lex;
 };
+
+class QTaskHandler : public TaskHandler
+{
+public:
+    QTaskHandler(QStandardItemModel* t_model);
+
+public:
+    virtual auto InsertTaskInModel(QStandardItemModel* t_model, QStringView t_name) noexcept -> void;
+
+    virtual auto addTask(std::string_view t_data) -> std::string override;
+protected:
+    QStandardItemModel* m_model;
+};
+
 } // namespace task
 
 #endif // TASK_HPP_
