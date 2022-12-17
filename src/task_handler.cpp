@@ -3,9 +3,8 @@
 #include <algorithm>
 #include <QStandardItemModel>
 
-namespace task {
 auto TaskHandler::addTask(std::string_view t_data) -> std::string {
-    std::pair<std::string, block_of_task> block = {};
+    std::pair<std::string, block_task> block = {};
 
     // Check string for valid
     auto c = std::count_if(t_data.begin(), t_data.end(), [](char c) { return c == ' '; });
@@ -17,6 +16,13 @@ auto TaskHandler::addTask(std::string_view t_data) -> std::string {
 
     auto word = t_data.find_first_of(' ');
     block.first = t_data.substr(0, word);
+
+    // if a task with the same name has already been created, we do not add it
+    if (m_tasks.find(block.first) != m_tasks.end()) {
+        std::cout << "Command add: task Already been created" << std::endl;
+        return {};
+    }
+
     auto str = t_data.substr(word + 1);
 
     std::size_t prev = 0, next = 0, delta = 1;
@@ -59,15 +65,16 @@ auto TaskHandler::updateTask(std::string_view t_data) noexcept -> void {
     }
 }
 
-auto TaskHandler::deleteTask(std::string_view t_data) noexcept -> void {
+auto TaskHandler::deleteTask(std::string_view t_data) noexcept -> bool {
     auto it = m_tasks.find(t_data);
 
     if (it == m_tasks.end()) {
         std::cout << "Command delete: task not found" << std::endl << std::endl;
-        return;
+        return false;
     }
 
     m_tasks.erase(it);
+    return true;
 }
 
 auto TaskHandler::selectTask(std::string_view t_data) -> void {
@@ -102,7 +109,7 @@ auto TaskHandler::selectTask(std::string_view t_data) -> void {
     m_lex.ptr = 0;
 }
 
-auto TaskHandler::handleTokens(block_of_task& t_task, const eToken t_tok) noexcept -> bool {
+auto TaskHandler::handleTokens(block_task& t_task, const eToken t_tok) noexcept -> bool {
     eToken new_tok;
 
     switch (t_tok) {
@@ -128,35 +135,35 @@ auto TaskHandler::handleTokens(block_of_task& t_task, const eToken t_tok) noexce
     return true;
 }
 
-// Parse "date < [some date]"
-auto TaskHandler::handleDate(block_of_task& t_task) noexcept -> void {
+// Parse "date (operator) [some date]"
+auto TaskHandler::handleDate(block_task& t_task) noexcept -> void {
     auto new_tok = m_lex.getToken(m_str_format);
     m_lex.getToken(m_str_format);
     auto data = m_lex.getData();
 
     switch (new_tok) {
     case eToken::T_MORE:
-        t_task.m_criteria[DATE] = t_task > data;
+        t_task.m_criteria[def::DATE] = t_task > data;
         break;
 
     case eToken::T_LESS:
-        t_task.m_criteria[DATE] = t_task < data;
+        t_task.m_criteria[def::DATE] = t_task < data;
         break;
 
     case eToken::T_MORE_OR_EQ:
-        t_task.m_criteria[DATE] = t_task >= data;
+        t_task.m_criteria[def::DATE] = t_task >= data;
         break;
 
     case eToken::T_LESS_OR_EQ:
-        t_task.m_criteria[DATE] = t_task <= data;
+        t_task.m_criteria[def::DATE] = t_task <= data;
         break;
 
     case eToken::T_EQUAL:
-        t_task.m_criteria[DATE] = t_task == data;
+        t_task.m_criteria[def::DATE] = t_task == data;
     }
 }
 
-auto TaskHandler::handleParam(block_of_task& t_task, const eToken t_tok) noexcept -> void {
+auto TaskHandler::handleParam(block_task& t_task, const eToken t_tok) noexcept -> void {
     auto tok = m_lex.getToken(m_str_format);
 
     if (tok != eToken::T_EQUAL && tok != eToken::T_LIKE) {
@@ -169,7 +176,7 @@ auto TaskHandler::handleParam(block_of_task& t_task, const eToken t_tok) noexcep
         }
     }
 
-    auto old_tok = static_cast<eDataType>(t_tok);
+    auto old_tok = static_cast<def::eDataType>(t_tok);
 
     tok = m_lex.getToken(m_str_format);
 
@@ -190,8 +197,8 @@ auto TaskHandler::handleParam(block_of_task& t_task, const eToken t_tok) noexcep
     }
 }
 
-auto TaskHandler::handleSubStr(block_of_task& t_task, const eToken t_tok) noexcept -> bool {
-    auto new_tok = static_cast<eDataType>(t_tok);
+auto TaskHandler::handleSubStr(block_task& t_task, const eToken t_tok) noexcept -> bool {
+    auto new_tok = static_cast<def::eDataType>(t_tok);
 
     if (m_lex.getToken(m_str_format) != eToken::T_WORD) {
         return false;
@@ -212,9 +219,9 @@ auto TaskHandler::handleSubStr(block_of_task& t_task, const eToken t_tok) noexce
     return true;
 }
 
-auto TaskHandler::parseCommand(std::string_view t_expr) -> const eCode {
+auto TaskHandler::parseCommand(std::string_view t_expr) -> const def::eCode {
     if (t_expr.empty()) {
-        return eCode::EMPTY;
+        return def::eCode::EMPTY;
     }
 
     std::size_t pos = t_expr.find_first_of(' ');
@@ -233,12 +240,12 @@ auto TaskHandler::parseCommand(std::string_view t_expr) -> const eCode {
     } else if (t_expr == "print") {
         printTasks();
     } else if (t_expr == "stop") {
-        return eCode::STOP;
+        return def::eCode::STOP;
     } else {
-        return eCode::NOT_FOUND;
+        return def::eCode::NOT_FOUND;
     }
 
-    return eCode::SUCCES;
+    return def::eCode::SUCCES;
 }
 
 auto TaskHandler::getStorage() const noexcept -> const storage& { return m_tasks; }
@@ -249,14 +256,14 @@ auto TaskHandler::printTasks() const noexcept -> void {
     }
 }
 
-auto TaskHandler::printTask(std::string_view t_name, const block_of_task& t_task) const noexcept
+auto TaskHandler::printTask(std::string_view t_name, const block_task& t_task) const noexcept
     -> void {
     std::cout << std::endl;
     std::cout << "Task: " << t_name << std::endl;
     if (!t_task.m_is_done) {
-        std::cout << "Description: " << t_task.m_data[eDataType::DESC] << std::endl;
-        std::cout << "Date: " << t_task.m_data[eDataType::DATE] << std::endl;
-        std::cout << "Category: " << t_task.m_data[eDataType::CATEGORY] << std::endl;
+        std::cout << "Description: " << t_task.m_data[def::eDataType::DESC] << std::endl;
+        std::cout << "Date: " << t_task.m_data[def::eDataType::DATE] << std::endl;
+        std::cout << "Category: " << t_task.m_data[def::eDataType::CATEGORY] << std::endl;
     } else {
         std::cout << "Task done" << std::endl << std::endl;
     }
@@ -289,31 +296,3 @@ auto TaskHandler::printSort(Lexer& t_lex) noexcept -> void {
     bools_cr = {0};
     bools_sub_str = {0};
 }
-
-QTaskHandler::QTaskHandler(QStandardItemModel* model): m_model(model)
-{   }
-
-auto QTaskHandler::InsertTaskInModel(QStandardItemModel* t_model, QStringView t_name) noexcept -> void
-{
-    t_model->insertRow(0);
-
-    // Set data from task to model
-    t_model->setData(t_model->index(0, 0), t_name.toString());
-    for (int j = 0, i = 1; i < ALL + 1; i++, j++) {
-        auto str = QString::fromStdString(m_tasks.at(t_name.toString().toStdString()).m_data[i]);
-        t_model->setData(t_model->index(0, i), QString::fromStdString(m_tasks.at(t_name.toString().toStdString()).m_data[j]));
-    }
-}
-
-auto QTaskHandler::addTask(std::string_view t_data) -> std::string
-{
-    auto task_name = TaskHandler::addTask(t_data);
-
-    if (!task_name.empty()) {
-        InsertTaskInModel(m_model, QString::fromStdString(task_name));
-    }
-
-    return task_name;
-}
-
-} // namespace task

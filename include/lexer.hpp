@@ -8,7 +8,6 @@
 #include "defines.hpp"
 
 // Small lexer for select
-namespace task {
 enum class eToken : int {
     T_DESC,
     T_DATE,
@@ -36,9 +35,9 @@ inline const std::unordered_map<std::string, eToken> g_tokens = {
 // Struct for storage bools
 struct boolStorage {
     // An array for storage result from find sub string
-    std::array<bool, ALL> m_sub_str;
+    std::array<bool, def::ALL> m_sub_str;
     // An array to store matching criteria and parameters
-    std::array<bool, ALL> m_criteria;
+    std::array<bool, def::ALL> m_criteria;
 };
 
 // Struct of lexer 
@@ -64,6 +63,5 @@ struct Lexer {
   public:
     auto getBools() noexcept -> boolStorage&;
 };
-} // namespace task
 
 #endif // LEXER_HPP_

@@ -1,12 +1,9 @@
 #include "gui/mainwindow.hpp"
 #include "./ui_mainwindow.h"
 #include "defines.hpp"
-#include "task_handler.hpp"
 
 #include <QtWidgets>
 #include <QVector>
-
-using namespace task;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -27,10 +24,10 @@ MainWindow::MainWindow(QWidget *parent)
     mainLayout->addWidget(ui->MainBox);
 
     // Create headers for GroupBox
-    createTaskModel(parent, {"Name", "Status", "Date", "Category"});
+    createTaskModel(parent, {"Name", "Description", "Date", "Category"});
     sourceView->setModel(model);
 
-    m_handler = std::make_unique<task::QTaskHandler>(model);
+    m_handler = std::make_unique<GuiTaskHandler>(model);
 }
 
 QStandardItemModel* MainWindow::getModel() const noexcept
@@ -54,12 +51,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_AddTaskButton_clicked()
 {
-
+    // create dialog window
 }
 
 void MainWindow::on_RegularLineEdit_editingFinished()
 {
-    if (m_handler->parseCommand(ui->RegularLineEdit->text().toStdString()) == eCode::SUCCES) {
+    if (m_handler->parseCommand(ui->RegularLineEdit->text().toStdString()) == def::eCode::SUCCES) {
         ui->RegularLineEdit->clear();
     }
 }

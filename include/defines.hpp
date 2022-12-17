@@ -10,7 +10,8 @@
 #define SPACE " "
 #define VERSION "1.0"
 
-namespace task {
+namespace def {
+
 // Different codes for handle functions
 enum class eCode : int { EMPTY, NOT_FOUND, NOT_VALID, STOP, UNRECOGNIZED_STRING, SUCCES };
 
@@ -75,6 +76,6 @@ struct string_hash {
     }
 };
 
-} // namespace task
+} // namespace def
 
 #endif // !DEFINES_HPP_

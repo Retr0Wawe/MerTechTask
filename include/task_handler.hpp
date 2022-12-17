@@ -17,14 +17,10 @@
     5) select * where {predicate} - provides output filtering by given parameters and keywords
 */
 
-class QStandardItemModel;
-
-namespace task {
-
 // Class for handle tasks
 class TaskHandler {
-    using storage = std::unordered_map<std::string, block_of_task, string_hash, string_equal>;
-
+    using storage = std::unordered_map<std::string, def::block_of_task, def::string_hash, def::string_equal>;
+    using block_task = def::block_of_task;
   public:
     TaskHandler() = default;
 
@@ -47,30 +43,30 @@ class TaskHandler {
 
     virtual auto updateTask(std::string_view t_data) noexcept -> void;
 
-    virtual auto deleteTask(std::string_view t_data) noexcept -> void;
+    virtual auto deleteTask(std::string_view t_data) noexcept -> bool;
 
     virtual auto selectTask(std::string_view t_data) -> void;
 
   protected:
     // Handle parse tokens
-    virtual auto handleTokens(block_of_task& t_task, const eToken t_tok) noexcept -> bool;
+    virtual auto handleTokens(block_task& t_task, const eToken t_tok) noexcept -> bool;
 
-    virtual auto handleDate(block_of_task& t_task) noexcept -> void;
+    virtual auto handleDate(block_task& t_task) noexcept -> void;
 
-    virtual auto handleParam(block_of_task& t_task, const eToken t_tok) noexcept -> void;
+    virtual auto handleParam(block_task& t_task, const eToken t_tok) noexcept -> void;
 
-    virtual auto handleSubStr(block_of_task& t_task, const eToken t_tok) noexcept -> bool;
+    virtual auto handleSubStr(block_task& t_task, const eToken t_tok) noexcept -> bool;
 
   public:
     // Print tasks
     virtual auto printTasks() const noexcept -> void;
 
-    virtual auto printTask(std::string_view t_name, const block_of_task& t_task) const noexcept
+    virtual auto printTask(std::string_view t_name, const block_task& t_task) const noexcept
         -> void;
 
     virtual auto printSort(Lexer& t_lex) noexcept -> void;
 
-    virtual auto parseCommand(std::string_view t_expr) -> const eCode;
+    virtual auto parseCommand(std::string_view t_expr) -> const def::eCode;
     // Get data
     auto getStorage() const noexcept -> const storage&;
 
@@ -79,20 +75,5 @@ class TaskHandler {
     storage m_tasks;
     Lexer m_lex;
 };
-
-class QTaskHandler : public TaskHandler
-{
-public:
-    QTaskHandler(QStandardItemModel* t_model);
-
-public:
-    virtual auto InsertTaskInModel(QStandardItemModel* t_model, QStringView t_name) noexcept -> void;
-
-    virtual auto addTask(std::string_view t_data) -> std::string override;
-protected:
-    QStandardItemModel* m_model;
-};
-
-} // namespace task
 
 #endif // TASK_HPP_

@@ -1,6 +1,6 @@
 #include "defines.hpp"
 
-namespace task {
+namespace def {
 
 std::ostream& operator<<(std::ostream& t_stream, const date& t_date) {
     t_stream << t_date.m_year << '-' << t_date.m_month << '-' << t_date.m_day << ' '
@@ -73,4 +73,5 @@ bool operator==(const block_of_task& t_task, const std::string& t_data) noexcept
                                                     date_str.m_day, date_str.m_hour,
                                                     date_str.m_minute);
 }
-} // namespace task
+
+} // namespace def
