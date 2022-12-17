@@ -21,7 +21,7 @@ auto GuiTaskHandler::insertTaskInModel(QStandardItemModel* t_model, QStringView 
 
 auto GuiTaskHandler::deleteTaskFromModel(QStandardItemModel* t_model, QStringView t_name) noexcept -> void
 {
-    auto val = m_rows.find(t_name.toString());
+    const auto val = m_rows.find(t_name.toString());
 
     if (val != m_rows.end()) {
         t_model->takeRow(val.value()).removeFirst();

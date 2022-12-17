@@ -42,7 +42,7 @@
    <widget class="QPushButton" name="DeleteTaskButton">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>180</x>
       <y>340</y>
       <width>80</width>
       <height>24</height>
@@ -55,7 +55,7 @@
    <widget class="QPushButton" name="AddTaskButton">
     <property name="geometry">
      <rect>
-      <x>140</x>
+      <x>90</x>
       <y>340</y>
       <width>80</width>
       <height>24</height>
@@ -70,18 +70,18 @@
      <rect>
       <x>20</x>
       <y>310</y>
-      <width>141</width>
+      <width>101</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>Regular expression:</string>
+     <string>Expression:</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="RegularLineEdit">
     <property name="geometry">
      <rect>
-      <x>140</x>
+      <x>90</x>
       <y>310</y>
       <width>431</width>
       <height>24</height>
@@ -94,7 +94,7 @@
    <widget class="QPushButton" name="DoneTaskButton">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>270</x>
       <y>340</y>
       <width>80</width>
       <height>24</height>
