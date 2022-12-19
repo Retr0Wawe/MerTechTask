@@ -34,7 +34,7 @@ private:
     Ui::MainWindow *ui;
     QStandardItemModel *model;
     QTreeView * sourceView;
-    std::unique_ptr<GuiTaskHandler> m_handler;
+    std::unique_ptr<TaskHandler> m_handler;
 };
 
 #endif // MAINWINDOW_H

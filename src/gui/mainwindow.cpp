@@ -2,6 +2,7 @@
 #include "./ui_mainwindow.h"
 #include "defines.hpp"
 
+#include <QMessageBox>
 #include <QtWidgets>
 #include <QVector>
 
@@ -58,6 +59,12 @@ void MainWindow::on_RegularLineEdit_editingFinished()
 {
     if (m_handler->parseCommand(ui->RegularLineEdit->text().toStdString()) == def::eCode::SUCCES) {
         ui->RegularLineEdit->clear();
+    } else {
+        QMessageBox box;
+        box.setIcon(QMessageBox::Information);
+        box.setDefaultButton(QMessageBox::Ok);
+        box.setText("Unrecognized expression!");
+        box.exec();
     }
 }
 

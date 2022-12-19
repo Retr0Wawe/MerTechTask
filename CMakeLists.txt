@@ -17,8 +17,6 @@ file(GLOB_RECURSE TASK_SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
 set(PROJECT_SOURCES
         ${PROJECT_SOURCE_DIR}/src/gui/mainwindow.ui
-        ${PROJECT_SOURCE_DIR}/src/gui/gui_task_handler.cpp
-        ${PROJECT_SOURCE_DIR}/include/gui/gui_task_handler.hpp
         ${TASK_HEADERS}
         ${TASK_SOURCES}
         main.cpp

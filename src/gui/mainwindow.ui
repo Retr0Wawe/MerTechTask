@@ -74,6 +74,11 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Expression:</string>
     </property>
@@ -83,25 +88,12 @@
      <rect>
       <x>90</x>
       <y>310</y>
-      <width>431</width>
+      <width>481</width>
       <height>24</height>
      </rect>
     </property>
     <property name="text">
      <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="DoneTaskButton">
-    <property name="geometry">
-     <rect>
-      <x>270</x>
-      <y>340</y>
-      <width>80</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Done task</string>
     </property>
    </widget>
    <widget class="QLabel" name="ButtonsLabel">
@@ -112,6 +104,11 @@
       <width>91</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Buttons:</string>
