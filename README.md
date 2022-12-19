@@ -1,4 +1,4 @@
-# TaskHandler
+# TaskManager
 A simple task management program.
 ## Сapabilities
 1) Creating, updating and deleting a task
