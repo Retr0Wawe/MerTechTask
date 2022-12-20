@@ -10,6 +10,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 class QStandardItemModel;
 class QTreeView;
+
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow

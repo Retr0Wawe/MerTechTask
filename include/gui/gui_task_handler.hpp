@@ -25,7 +25,7 @@ protected:
     QStandardItemModel* m_model;
     rows_storage m_rows;
 public:
-    static inline int g_rows_counter = 0;
+    int g_rows_counter = 0;
 };
 
 #endif //!GUI_TASK_HANDLER_H

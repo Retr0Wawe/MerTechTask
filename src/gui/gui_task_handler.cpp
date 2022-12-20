@@ -13,24 +13,13 @@ auto GuiTaskHandler::insertTaskInModel(QStandardItemModel* t_model, QStringView 
     for (int j = 0, i = 1; i < def::ALL + 1; i++, j++) {
         t_model->setData(t_model->index(g_rows_counter, i), QString::fromStdString(m_tasks.at(t_name.toString().toStdString()).m_data[j]));
     } g_rows_counter++;
-
-//    for (const auto& a : m_rows.toStdMap()) {
-//        std::cout << a.first.toStdString() << " " << a.second << std::endl;
-//    }
 }
 
 auto GuiTaskHandler::deleteTaskFromModel(QStandardItemModel* t_model, QStringView t_name) noexcept -> void
 {
     const auto val = m_rows.find(t_name.toString());
 
-    if (val != m_rows.end()) {
-        auto lst = t_model->takeRow(val.value());
-        if (!lst.isEmpty()) {
-            qDeleteAll(lst);
-        }
-        m_rows.erase(val);
-        g_rows_counter--;
-    }
+    // переделать полностью
 }
 
 auto GuiTaskHandler::addTask(std::string_view t_data) -> std::string

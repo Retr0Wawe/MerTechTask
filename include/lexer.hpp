@@ -52,7 +52,7 @@ struct Lexer {
 
   public:
     // Pointer to current symbol
-    static inline std::size_t ptr = 0;
+   std::size_t ptr = 0;
 
   private:
     // First array for set Tokens, second for set if substr find
