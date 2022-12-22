@@ -15,6 +15,13 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 file(GLOB_RECURSE TASK_HEADERS ${PROJECT_SOURCE_DIR}/include/*.hpp)
 file(GLOB_RECURSE TASK_SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
+# By default gui version not usage
+option(GUI "For use gui version of programm" OFF)
+
+if(GUI)
+    add_definitions(-DGUI)
+endif(GUI)
+
 set(PROJECT_SOURCES
         ${PROJECT_SOURCE_DIR}/src/gui/mainwindow.ui
         ${TASK_HEADERS}
@@ -26,7 +33,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(TaskHandler
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-    )
+)
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET TaskHandler APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)

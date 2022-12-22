@@ -274,7 +274,6 @@ auto TaskHandler::printTask(std::string_view t_name, const block_task& t_task) c
 auto TaskHandler::printSort(Lexer& t_lex) noexcept -> void {
     auto& bools_cr = t_lex.getBools().m_criteria;
     auto& bools_sub_str = t_lex.getBools().m_sub_str;
-
     auto b_cr_count = std::count(bools_cr.begin(), bools_cr.end(), true);
     auto b_sub_str_count = std::count(bools_sub_str.begin(), bools_sub_str.end(), true);
 

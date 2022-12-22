@@ -19,7 +19,14 @@ auto GuiTaskHandler::deleteTaskFromModel(QStandardItemModel* t_model, QStringVie
 {
     const auto val = m_rows.find(t_name.toString());
 
-    // переделать полностью
+    if (val != m_rows.end()) {
+        auto lst = t_model->takeRow(val.value());
+        if (!lst.isEmpty()) {
+            qDeleteAll(lst);
+            m_rows.erase(val);
+            g_rows_counter--;
+        }
+    }
 }
 
 auto GuiTaskHandler::addTask(std::string_view t_data) -> std::string
