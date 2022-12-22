@@ -2,8 +2,8 @@
 #define LEXER_HPP_
 
 #include <string>
-#include <unordered_map>
 #include <string_view>
+#include <unordered_map>
 
 #include "defines.hpp"
 
@@ -40,7 +40,7 @@ struct boolStorage {
     std::array<bool, def::ALL> m_criteria;
 };
 
-// Struct of lexer 
+// Struct of lexer
 struct Lexer {
     auto setBoolIfFind(const eToken t_tok) noexcept -> void;
 
@@ -52,7 +52,7 @@ struct Lexer {
 
   public:
     // Pointer to current symbol
-   std::size_t ptr = 0;
+    std::size_t ptr = 0;
 
   private:
     // First array for set Tokens, second for set if substr find

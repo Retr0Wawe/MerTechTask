@@ -3,13 +3,10 @@
 #include "defines.hpp"
 
 #include <QMessageBox>
-#include <QtWidgets>
 #include <QVector>
+#include <QtWidgets>
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-{
+MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     this->setWindowTitle(NAME SPACE VERSION);
 
@@ -21,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     sourceLayout->addWidget(sourceView);
     ui->MainBox->setLayout(sourceLayout);
 
-    QVBoxLayout * mainLayout = new QVBoxLayout;
+    QVBoxLayout* mainLayout = new QVBoxLayout;
     mainLayout->addWidget(ui->MainBox);
 
     // Create headers for GroupBox
@@ -31,13 +28,9 @@ MainWindow::MainWindow(QWidget *parent)
     m_handler = std::make_unique<GuiTaskHandler>(model);
 }
 
-QStandardItemModel* MainWindow::getModel() const noexcept
-{
-    return model;
-}
+QStandardItemModel* MainWindow::getModel() const noexcept { return model; }
 
-void MainWindow::createTaskModel(QObject *parent, const QVector<QString>& headers) noexcept
-{
+void MainWindow::createTaskModel(QObject* parent, const QVector<QString>& headers) noexcept {
     model = new QStandardItemModel(0, headers.size(), parent);
 
     for (int i = 0; i < headers.size(); i++) {
@@ -45,18 +38,13 @@ void MainWindow::createTaskModel(QObject *parent, const QVector<QString>& header
     }
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
+MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::on_AddTaskButton_clicked()
-{
+void MainWindow::on_AddTaskButton_clicked() {
     // create dialog window
 }
 
-void MainWindow::on_RegularLineEdit_editingFinished()
-{
+void MainWindow::on_RegularLineEdit_editingFinished() {
     if (m_handler->parseCommand(ui->RegularLineEdit->text().toStdString()) == def::eCode::SUCCES) {
         ui->RegularLineEdit->clear();
     } else {
@@ -67,4 +55,3 @@ void MainWindow::on_RegularLineEdit_editingFinished()
         box.exec();
     }
 }
-

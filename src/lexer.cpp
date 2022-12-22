@@ -11,15 +11,16 @@ auto Lexer::getToken(std::string_view t_str) -> const eToken {
         }
 
         if (auto it = g_tokens.find(temp); it != g_tokens.end()) {
-            setBoolIfFind(it->second);    // Set bool if token was be set
-            return (m_tok = it->second);  // Find and return token
+            setBoolIfFind(it->second);   // Set bool if token was be set
+            return (m_tok = it->second); // Find and return token
         }
 
         if (t_str.at(ptr) == '\"') {
             m_data.clear();
             while (t_str.at(++ptr) != '\"') {
                 temp.push_back(t_str.at(ptr));
-            } ptr++;
+            }
+            ptr++;
             m_data = std::move(temp);
             return eToken::T_WORD;
         } else {

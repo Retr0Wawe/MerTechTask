@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
-#include <QString>
 
 #include "defines.hpp"
 #include "lexer.hpp"
@@ -19,8 +18,10 @@
 
 // Class for handle tasks
 class TaskHandler {
-    using storage = std::unordered_map<std::string, def::block_of_task, def::string_hash, def::string_equal>;
+    using storage =
+        std::unordered_map<std::string, def::block_of_task, def::string_hash, def::string_equal>;
     using block_task = def::block_of_task;
+
   public:
     TaskHandler() = default;
 

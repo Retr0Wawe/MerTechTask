@@ -1,7 +1,7 @@
 ﻿#include "task_handler.hpp"
 
-#include <algorithm>
 #include <QStandardItemModel>
+#include <algorithm>
 
 auto TaskHandler::addTask(std::string_view t_data) -> std::string {
     std::pair<std::string, block_task> block = {};
