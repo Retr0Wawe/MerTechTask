@@ -12,6 +12,7 @@ class MainWindow;
 }
 class QStandardItemModel;
 class QTreeView;
+class Demo;
 
 QT_END_NAMESPACE
 
@@ -37,6 +38,7 @@ class MainWindow : public QMainWindow {
     Ui::MainWindow* ui;
     QStandardItemModel* model;
     QTreeView* sourceView;
+    Demo *dialog;
     std::unique_ptr<TaskHandler> m_handler;
 };
 

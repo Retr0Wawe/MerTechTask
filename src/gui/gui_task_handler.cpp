@@ -41,13 +41,6 @@ auto GuiTaskHandler::addTask(std::string_view t_data) -> std::string {
     return task_name;
 }
 
-// Test data
-// add task guys kekov entry
-// add task2 mols hello sukably
-// add task3 boys someworld sukably
-// add task4 lower kysol mega
-// add task5 graph kekov sukably
-
 auto GuiTaskHandler::deleteTask(std::string_view t_data) noexcept -> bool {
     if (t_data.empty() || !TaskHandler::deleteTask(t_data)) {
         return false;
