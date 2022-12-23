@@ -10,7 +10,7 @@ using namespace task;
     3) update task_name (and you shuold be enter your new date) - updates the task with your data
 
     4) delete task_name - removes a task from the list
-
+*/
 
 int main() {
     TaskHandler handler, handler2;
