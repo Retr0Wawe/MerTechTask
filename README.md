@@ -17,10 +17,17 @@ sudo apt install cmake
 sudo apt-get install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools
 sudo apt install qtcreator
 ```
-### Build
+## Build
 ```bash
 mkdir build && cd build
-```
-```bash
 cmake .. -DGUI=ON && make  // Use "-DGUI=OFF" for console version
+```
+## Usage
+```
+1) add {task_name} {description} {date(like: 2020-12-12-00:00)} {category} - adds a task
+2) done {task_name} - marks the task as finished
+3) update {task_name} (and you shuold be enter your new date) - updates the task with your data
+4) delete {task_name} - removes a task from the list
+5) select * - print all tasks
+6) select * where {predicate} - provides output filtering by given parameters and keywords
 ```
