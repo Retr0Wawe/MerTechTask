@@ -35,5 +35,8 @@ cmake .. -DGUI=ON && make  // Use "-DGUI=OFF" for console version
 5) select * - print all tasks
 6) select * where {predicate} - provides output filtering by given parameters and keywords
 ```
-## Screenshot
-![task_manager](https://github.com/Retr0Wawe/TaskManager/blob/main/screenshots/task_manager.png "Task Manager on Windows")
+## Screenshots
+### Gui version
+![task_manager](https://github.com/Retr0Wawe/TaskManager/blob/main/screenshots/task_manager.png "Task Manager(Gui version)")
+### Console version with own sort algorithm
+![task_manager](https://github.com/Retr0Wawe/TaskManager/blob/main/screenshots/console_manager.png "Task Manager(Console version)")
