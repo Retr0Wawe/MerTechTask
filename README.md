@@ -40,3 +40,5 @@ cmake .. -DGUI=ON && make  // Use "-DGUI=OFF" for console version
 ![task_manager](https://github.com/Retr0Wawe/TaskManager/blob/main/screenshots/task_manager.png "Task Manager(Gui version)")
 ### Console version with own sort algorithm
 ![task_manager](https://github.com/Retr0Wawe/TaskManager/blob/main/screenshots/console_manager.png "Task Manager(Console version)")
+
+The program is not finished
